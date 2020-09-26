@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/styles/base.css">
+    <link rel="stylesheet" href="/static/styles/ajout.css">
+    <title>Ajout</title>
+</head>
+<body>
+    <div id="menu">
+        <h1><a href="/" id="lienAccueil">Liens</a></h1> 
+        <header>
+            <a id="select">Ajout</a>
+            <a href="apropos">A propos</a>
+        </header>
+    </div>
+    <hr>
+
+    <form action="bizutage" method="post">
+        <input type="text" name="titre" id="titre" placeholder="Titre" required>
+        <input type="url" name="lien" placeholder="Liens" required>
+        <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
+        <input type="submit" value="Envoyer">
+    </form>
+
+</body>
+</html>
