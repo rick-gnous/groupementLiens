@@ -1,9 +1,20 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response
-from os import path
+from flask import Flask, render_template, request, redirect, url_for, make_response, Markup
+from enum import Enum
 from bs4 import BeautifulSoup
 
 app = Flask('ui', static_url_path="/static")
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+class Status(Enum):
+    ERREUR_LIEN = "Le lien doit être en http ou https !",
+    BON = "Lien ajouté !"
+
+def ecritureFichierHtml(nouvLien, cheminFichier):
+    with open(cheminFichier, 'r') as file:
+        soup = BeautifulSoup(file, 'html.parser')
+        soup.find("hr").insert_after("", nouvLien)
+    with open(cheminFichier, 'w') as file:
+        file.write(soup.prettify())
 
 @app.route('/')
 def slash():
@@ -22,32 +33,22 @@ def apropos():
 @app.route("/bizutage", methods=["POST"])
 def bizutage():
     if request.method == "POST":
-        titre = request.values['titre'] 
         lien = request.values['lien'] 
-        desc = request.values['desc'] 
+        if not (lien.startswith("http") or lien.startswith("https")):
+            return render_template("ajout.html", erreur=Status.ERREUR_LIEN.value)
+
+        titre = Markup.escape(request.values['titre'])
+        desc = Markup.escape(request.values['desc'])
         nouvLien = "<div class=\"elem\"><h2>{}</h2><p><a href=\"{}\">Lien</a></p><hr><p>{}</p>".format(titre, lien, desc)
         nouvLienHtml = BeautifulSoup(nouvLien, "html.parser")
+        nouvLienHtmlJinja = BeautifulSoup("{% raw %}" + nouvLien + "{% endraw %}", "html.parser")
 
-        if nouvLienHtml.find("script") != None:
-            erreur = "Vous ne pouvez pas charger de balises script !"
-            return render_template("ajout.html", erreur=erreur)
+        ecritureFichierHtml(nouvLienHtmlJinja, "templates/index.html")
+        ecritureFichierHtml(nouvLienHtml, "lite/index.html")
 
-        with open("templates/index.html", 'r') as file:
-            soup = BeautifulSoup(file, 'html.parser')
-            soup.find("hr").insert_after("", nouvLienHtml)
-        with open("templates/index.html", 'w') as file:
-            file.write(soup.prettify())
-
-        with open("lite/index.html", 'r') as file:
-            soup = BeautifulSoup(file, 'html.parser')
-            soup.find("hr").insert_after("", nouvLienHtml)
-        with open("lite/index.html", 'w') as file:
-            file.write(soup.prettify())
-
-        reussite = "Lien ajouté !"
     else:
         print("error")
-    return render_template("ajout.html", reussi=reussite)
+    return render_template("ajout.html", reussi=Status.BON.value)
 
 if __name__ == "__main__":
     app.run()
