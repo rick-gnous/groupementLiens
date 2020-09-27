@@ -28,6 +28,10 @@ def bizutage():
         nouvLien = "<div class=\"elem\"><h2>{}</h2><p><a href=\"{}\">Lien</a></p><hr><p>{}</p>".format(titre, lien, desc)
         nouvLienHtml = BeautifulSoup(nouvLien, "html.parser")
 
+        if nouvLienHtml.find("script") != None:
+            erreur = "Vous ne pouvez pas charger de balises script !"
+            return render_template("ajout.html", erreur=erreur)
+
         with open("templates/index.html", 'r') as file:
             soup = BeautifulSoup(file, 'html.parser')
             soup.find("hr").insert_after("", nouvLienHtml)
@@ -39,9 +43,11 @@ def bizutage():
             soup.find("hr").insert_after("", nouvLienHtml)
         with open("lite/index.html", 'w') as file:
             file.write(soup.prettify())
+
+        reussite = "Lien ajouté !"
     else:
         print("error")
-    return redirect(url_for("ajout"))
+    return render_template("ajout.html", reussi=reussite)
 
 if __name__ == "__main__":
     app.run()

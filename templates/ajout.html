@@ -23,5 +23,10 @@
         <input type="submit" value="Envoyer">
     </form>
 
+    {% if erreur %}
+        <p id="erreur">{{ erreur }}</p>
+    {% elif reussi %}
+        <p id="reussi">{{ reussi }}</p>
+    {% endif %}
 </body>
 </html>
