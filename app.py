@@ -18,7 +18,7 @@ def ecritureFichierHtml(nouvLien, cheminFichier):
 
 @app.route('/')
 def slash():
-    response = make_response(render_template("index.html"))
+    response = make_response(app.send_static_file("index.html"))
     response.headers["Content-Security-Policy"] = "default-src 'self'"
     return response
 
@@ -28,7 +28,7 @@ def ajout():
 
 @app.route("/apropos")
 def apropos():
-    return render_template("apropos.html")
+    return app.send_static_file("apropos.html")
 
 @app.route("/bizutage", methods=["POST"])
 def bizutage():
@@ -41,9 +41,8 @@ def bizutage():
         desc = Markup.escape(request.values['desc'])
         nouvLien = "<div class=\"elem\"><h2>{}</h2><p><a href=\"{}\">Lien</a></p><hr><p>{}</p>".format(titre, lien, desc)
         nouvLienHtml = BeautifulSoup(nouvLien, "html.parser")
-        nouvLienHtmlJinja = BeautifulSoup("{% raw %}" + nouvLien + "{% endraw %}", "html.parser")
 
-        ecritureFichierHtml(nouvLienHtmlJinja, "templates/index.html")
+        ecritureFichierHtml(nouvLienHtml, "static/index.html")
         ecritureFichierHtml(nouvLienHtml, "lite/index.html")
 
     else:
