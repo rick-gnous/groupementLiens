@@ -73,7 +73,7 @@ def bizutage():
     categorie = Markup.escape(request.values["categories"])
     nouvLien = f"""<div class="elem {categorie}">
                       <h2>{titre}</h2>
-                      <p><a href=\"{lien}\">Lien</a></p>
+                      <p><a href=\"{lien}\">{lien}</a></p>
                       <hr>
                       <p>{desc}</p>
                    </div>"""
