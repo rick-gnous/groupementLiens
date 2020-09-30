@@ -1,7 +1,24 @@
+#categories {
+    height: 3em;
+}
+
 #categories ul {
     list-style-type: none;
     display: flex;
     justify-content:space-around;
+    height: 100%;
+}
+
+#categories li {
+    padding-top: 1em;
+}
+
+#categories a {
+    color: white;
+    text-decoration: none;
+    padding: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 .elem {
@@ -28,4 +45,16 @@
     margin-right: 5px;
     padding: 5px;
     background-color: dimgray;
+}
+
+.informatique {
+   background-color: #3A506B;
+}
+
+.musique {
+    background-color: #A4036F;
+}
+
+.autres {
+    background-color: #388659;
 }

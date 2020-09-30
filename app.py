@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, make_response, \
-        Markup
+    Markup
 from enum import Enum
 from bs4 import BeautifulSoup
 import re
@@ -17,9 +17,10 @@ class Status(Enum):
 
 class Manip():
     def ecritureFichierHtml(nouvLien, cheminFichier):
+        nouvLienHtml = BeautifulSoup(nouvLien, "html.parser")
         with open(cheminFichier, 'r+') as file:
             soup = BeautifulSoup(file, 'html.parser')
-            soup.find("hr").insert_after("", nouvLien)
+            soup.find("hr").insert_after("", nouvLienHtml)
             file.seek(0)
             file.write(soup.prettify())
     
@@ -42,6 +43,10 @@ def slash():
     response.headers["Content-Security-Policy"] = "default-src 'self'"
     return response
 
+@app.route("/categories/<path:subpath>")
+def categories(subpath):
+    return app.send_static_file(subpath + ".html")
+
 @app.route("/ajout")
 def ajout():
     return render_template("ajout.html")
@@ -56,25 +61,27 @@ def bizutage_redirect():
 
 @app.route("/bizutage", methods=["POST"])
 def bizutage():
-    lien = request.values['lien'] 
-    if not valideUrl(lien):
+    lien = request.values["lien"] 
+    if not Manip.valideUrl(lien):
         return render_template(
             "ajout.html", 
             erreur=Status.ERREUR_LIEN.value
         )
 
-    titre = Markup.escape(request.values['titre'])
-    desc = Markup.escape(request.values['desc'])
-    nouvLien = f"""<div class="elem">
+    titre = Markup.escape(request.values["titre"])
+    desc = Markup.escape(request.values["desc"])
+    categorie = Markup.escape(request.values["categories"])
+    nouvLien = f"""<div class="elem {categorie}">
                       <h2>{titre}</h2>
                       <p><a href=\"{lien}\">Lien</a></p>
                       <hr>
                       <p>{desc}</p>
                    </div>"""
-    nouvLienHtml = BeautifulSoup(nouvLien, "html.parser")
 
-    ecritureFichierHtml(nouvLienHtml, "static/index.html")
-    ecritureFichierHtml(nouvLienHtml, "lite/index.html")
+    Manip.ecritureFichierHtml(nouvLien, "static/index.html")
+    Manip.ecritureFichierHtml(nouvLien, "static/" + categorie + ".html")
+    Manip.ecritureFichierHtml(nouvLien, "lite/index.html")
+    Manip.ecritureFichierHtml(nouvLien, "lite/" + categorie + ".html")
     return render_template("ajout.html", reussi=Status.BON.value)
 
 if __name__ == "__main__":
