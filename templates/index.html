@@ -10,12 +10,29 @@
     <div id="menu">
         <h1>Liens</h1> 
         <header>
-            <a href="ajout">Ajout</a>
-            <a href="apropos">A propos</a>
+            <!-- <a href="recherche/">Recherche</a> -->
+            <a href="/ajout">Ajout</a>
+            <a href="/apropos">A propos</a>
         </header>
     </div>
+    <div id="categories">
+        <ul>
+            <li><a href="/">Toutes catégories</a></li>
+            <li class="informatique"><a href="/categories/informatique">Informatique</a></li>
+            <li class="musique"><a href="/categories/musique">Musique</a></li>
+            <li class="autres"><a href="/categories/autres">Autres</a></li>
+        </ul>
+    </div>
+    <p>Rafraichissez la page pour voir les derniers liens ajoutés.</p>
     <hr>
-
+    {% for lien in listeLiens %}
+        <div class="elem {{lien.categorie}}">
+            <h2>{{lien.titre}}</h2>
+            <p><a href="{{lien.url}}">{{lien.url}}</a></p>
+            <hr>
+            <p>{{lien.desc}}</p>
+        </div>
+    {% endfor %}
    <footer>
         <hr>
         Version Alpha
