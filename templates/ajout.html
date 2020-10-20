@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/styles/base.css">
@@ -25,13 +25,22 @@
             <option value="musique">Musique</option>
             <option value="autres" selected>Autre</option>
         </select>
+        
+        <label for="tags">Séparez vos tags avec ; </label>
+        <textarea name="tags" id="tag" cols="30" rows="10"></textarea>
+        <!-- <input type="text" name="tag" id="tag" placeholder="Tag">
+        <input type="button" onClick="addTag()" value="Ajouter tag"> -->
         <input type="submit" value="Envoyer">
     </form>
+    <!-- <div id="listTag">
+    </div> -->
 
     {% if erreur %}
         <p id="erreur">{{ erreur }}</p>
     {% elif reussi %}
         <p id="reussi">{{ reussi }}</p>
     {% endif %}
+
+    <!-- <script src="/static/test.js"></script> -->
 </body>
 </html>

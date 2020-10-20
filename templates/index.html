@@ -31,6 +31,12 @@
             <p><a href="{{lien.url}}">{{lien.url}}</a></p>
             <hr>
             <p>{{lien.desc}}</p>
+            <p>Tags:</p>
+            <ul>
+                {% for tag in lien.tags %}
+                    <li>{{tag}}</li>
+                {% endfor %}
+            </ul>
         </div>
     {% endfor %}
    <footer>

@@ -59,12 +59,19 @@ def bizutage():
     titre = Markup.escape(request.values["titre"])
     desc = Markup.escape(request.values["desc"])
     categorie = Markup.escape(request.values["categories"])
+    tagsList = request.values["tags"].split(';')
+    tags = []
+    for i in tagsList:
+        i.strip()
+        i = Markup.escape(i)
+        if i not in tags:
+            tags.append(i)
 
     nouvLien = {"titre": titre,
                 "url": lien,
                 "desc": desc,
                 "categorie": categorie,
-                "tags": []
+                "tags": tags
                }
 
     ret = manip.ajoutLienJson(nouvLien)
