@@ -44,6 +44,15 @@ def categories(subpath):
 def ajout():
     return render_template("ajout.html")
 
+@app.route("/recherche")
+def recherche():
+    with open(fichierJson, 'r') as fichier:
+        liens = json.load(fichier)
+    listeLiens = liens["liens"]
+    listeLiens.reverse()
+    response = make_response(render_template("recherche.html", listeLiens=listeLiens))
+    return response
+
 @app.route("/apropos")
 def apropos():
     return app.send_static_file("apropos.html")

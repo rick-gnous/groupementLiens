@@ -17,13 +17,26 @@
     </div>
     <div id="categories">
         <ul>
-            <li><a href="/">Toutes catégories</a></li>
+       <!--     <li><a href="/">Toutes catégories</a></li>
             <li class="informatique"><a href="/categories/informatique">Informatique</a></li>
             <li class="musique"><a href="/categories/musique">Musique</a></li>
-            <li class="autres"><a href="/categories/autres">Autres</a></li>
+            <li class="autres"><a href="/categories/autres">Autres</a></li> -->
         </ul>
     </div>
-    <p>Rafraichissez la page pour voir les derniers liens ajoutés.</p>
+    
+    <div>
+    <p>Recherche</p>
+    <form>
+        <select id="categorie" name="categorie">
+            <option value="informatique">Informatique</option>
+            <option value="musique">Musique</option>
+            <option value="autres">Autre</option>
+            <option value="tout" selected>Pas de filtre</option>
+        </select>
+        <input type="button" value="Recherche" onClick="recherche()">
+    </form>
+    </div>
+
     <hr>
     {% for lien in listeLiens %}
         <div class="elem {{lien.categorie}}">
@@ -43,5 +56,6 @@
         <hr>
         Version Alpha
    </footer>
+   <script src="/static/recherche.js"></script>
 </body>
 </html>
